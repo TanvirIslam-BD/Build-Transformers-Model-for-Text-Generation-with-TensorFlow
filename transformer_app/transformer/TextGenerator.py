@@ -1,4 +1,3 @@
-
 import numpy as np
 import tensorflow as tf
 from transformer_app.transformer.train import vectorizer
