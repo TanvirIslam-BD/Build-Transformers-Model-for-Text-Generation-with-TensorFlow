@@ -65,7 +65,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django_ml_app/settings.py
-ROOT_URLCONF = 'core_app.urls'
+ROOT_URLCONF = 'core.urls'
 
 # Define the log directory path
 LOG_DIR = os.path.join(BASE_DIR, 'transformer_app', 'logs')

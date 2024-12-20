@@ -20,6 +20,12 @@ print(text[:1000])
 vocab_size = 10000
 seq_length = 100
 
+# Hyperparameters
+embed_dim = 256
+num_heads = 4
+ff_dim = 512
+num_layers = 4
+
 # Adapt TextVectorization to full text
 vectorizer = TextVectorization(max_tokens=vocab_size, output_mode='int')
 text_ds = tf.data.Dataset.from_tensor_slices([text]).batch(1)
@@ -57,12 +63,6 @@ print("Shape of X:", X.shape)
 print("Shape of Y:", Y.shape)
 
 
-# Hyperparameters
-embed_dim = 256
-num_heads = 4
-ff_dim = 512
-num_layers = 4
-
 # Build the Transformer model
 model = TransformerModel(vocab_size, embed_dim, num_heads, ff_dim, num_layers, seq_length)
 
@@ -76,22 +76,26 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
 model.summary()
 
 
-# Early stopping callback to stop training if the loss doesn't improve
-early_stopping = EarlyStopping(monitor='loss', patience=2, restore_best_weights=True)
+def train_model():
+    # Early stopping callback to stop training if the loss doesn't improve
+    early_stopping = EarlyStopping(monitor='loss', patience=2, restore_best_weights=True)
 
-# Train the transformer model on the full input and target sequences
-history = model.fit(X, Y, epochs=20, batch_size=32, callbacks=[early_stopping])
+    # Train the transformer model on the full input and target sequences
+    history = model.fit(X, Y, epochs=20, batch_size=32, callbacks=[early_stopping])
 
-# Plot training loss to monitor model performance over epochs
-plt.plot(history.history['loss'])
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.title('Training Loss')
-plt.show()
+    # Plot training loss to monitor model performance over epochs
+    plt.plot(history.history['loss'])
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title('Training Loss')
+    plt.show()
+    return history
 
 
-# Generate longer text
-start_string = "To be, or not to be"
-generated_text = generate_text(model, start_string)
 
-print(generated_text)
+ # Generate longer text
+def generate_text_with_transformer():
+    start_string = "To be, or not to be"
+    generated_text = generate_text(model, start_string)
+    print(generated_text)
+    return generated_text
